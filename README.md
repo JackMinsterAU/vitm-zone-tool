@@ -12,7 +12,7 @@ poetry run main <path_to_coarse_demographic_dbf> \
 ```
 
 The lookup csv needs to have the following structure: 
-| Old_Z_6973           | Z_20825           | New_Z+6973                   |
+| Old_Z_6973           | Z_20825           | New_Z_6973                   |
 |:---------------------|:------------------|:-----------------------------|
 | <old coarse zone id> | <fine subzone id> | <new id for aggregated zone> |
 

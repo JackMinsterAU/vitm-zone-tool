@@ -3,6 +3,7 @@ import dbf
 import pandas as pd
 from typing import List, Dict
 import copy
+from itertools import chain
 
 
 # function to get all fine zone dicts replacing a coarse zone
@@ -102,3 +103,20 @@ def aggregate_zones(fine_zone_dicts: List[dict], lookup: pd.DataFrame) -> List[d
         aggregated_zone_dicts.append(aggregated_dict)
 
     return aggregated_zone_dicts
+
+
+def combine_and_sort_dicts_by_zone(list_of_dict_lists: List[List[dict]]) -> List[dict]:
+    combined_list = list(chain.from_iterable(list_of_dict_lists))
+    sorted_list = sorted(combined_list, key=lambda d: int(d["ZONE"]))
+    return sorted_list
+
+
+def create_zeroed_zones(zone_id_list: List[str], table: dbf.tables.Db3Table):
+    fieldnames = table.field_names
+    zone_dict_list = []
+
+    for zone_id in zone_id_list:
+        zone_dict = {field: 0 for field in fieldnames}
+        zone_dict["ZONE"] = float(zone_id)
+        zone_dict_list.append(zone_dict)
+    return zone_dict_list
