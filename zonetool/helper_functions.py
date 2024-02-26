@@ -28,7 +28,8 @@ def record_to_dict(table: dbf.tables.Db3Table, record: dbf.tables.Record) -> Dic
 
 
 # distribute the coarse-zone totals (eg. Population) amongst the fine
-# zones by proportion of the same total in each fine zone
+# zones by proportion of the same
+ total in each fine zone
 def distribute_coarse_totals(
     fine_zone_dicts: List[dict], coarse_zone_dict: dict
 ) -> List[dict]:

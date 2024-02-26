@@ -12,7 +12,7 @@ click = "^8.1.7"
 dbf = "^0.99.9"
 
 [tool.poetry.scripts]
-main = "zonetool.run.main:run"
+zonetool = "zonetool.run.main:run"
 
 
 [tool.poetry.group.dev.dependencies]
