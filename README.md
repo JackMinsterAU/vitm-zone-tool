@@ -5,7 +5,7 @@ Install and run using poetry:
 poetry install
 poetry shell
 
-poetry run main <path_to_coarse_demographic_dbf> \
+poetry run zonetool <path_to_coarse_demographic_dbf> \
     <path_to_fine_demographic_dbf> \
     <path_to_lookup_csv> \ 
     <output_dbf_filename>
