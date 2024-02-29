@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from icecream import ic
 from ..load_data import read_dbf, read_csv
 from ..helper_functions import (
     get_fine_zone_dicts,
