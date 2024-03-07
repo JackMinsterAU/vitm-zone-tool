@@ -36,20 +36,25 @@ def distribute_coarse_totals(
 ) -> List[dict]:
     keys = list(coarse_zone_dict.keys())
     updated_fine_zone_dicts = copy.deepcopy(fine_zone_dicts)
-
     for key in keys:
         if key.startswith("BC"):
             postfix = key.split("_")[1]
             employment = "EMP_" + postfix
             temp_bc_key = "temp_" + key + "_total"
+            wc_key = "WC_" + postfix
             keys.append(temp_bc_key)
+            keys.append(wc_key)
             coarse_zone_dict[temp_bc_key] = (
                 coarse_zone_dict[key] * coarse_zone_dict[employment]
+            )
+            coarse_zone_dict[wc_key] = (
+                coarse_zone_dict[employment] - coarse_zone_dict[temp_bc_key]
             )
             for fzd, ufzd in zip(fine_zone_dicts, updated_fine_zone_dicts):
                 ufzd[temp_bc_key] = ufzd[key] * ufzd[employment]
                 fzd[temp_bc_key] = fzd[key] * fzd[employment]
-
+                ufzd[wc_key] = ufzd[employment] - ufzd[temp_bc_key]
+                fzd[wc_key] = fzd[employment] - fzd[temp_bc_key]
         elif key == "ZONE":
             pass
         else:
@@ -61,7 +66,7 @@ def distribute_coarse_totals(
     return updated_fine_zone_dicts
 
 
-# calculate the ratio of blue-collar jobs for each _IC postfix
+# calculate the ratio of blue-collar jobs for each _IC* postfix
 def calc_bc_ratios(aggregated_zone_dicts: List[dict]) -> List[dict]:
     starts_with_temp = lambda key: key.startswith("temp_")
     keys = list(aggregated_zone_dicts[0].keys())
@@ -72,9 +77,14 @@ def calc_bc_ratios(aggregated_zone_dicts: List[dict]) -> List[dict]:
         for key in keys:
             replacement_key = "_".join(key.split("_")[1:3])
             ic_postfix = key.split("_")[2]
+            wc_key = "WC_" + ic_postfix
             employment_key = "EMP_" + ic_postfix
-            d[replacement_key] = d[employment_key] and d[key] / d[employment_key] or 0
+            percent_blue_collar = (
+                (d[key] + d[wc_key]) and d[key] / (d[key] + d[wc_key]) or 0
+            )
+            d[replacement_key] = percent_blue_collar
             del d[key]
+            del d[wc_key]
         updated_zone_dicts.append(d)
 
     return updated_zone_dicts

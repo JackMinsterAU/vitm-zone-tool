@@ -64,7 +64,7 @@ def run(coarse_dbf: str, fine_dbf: str, lookup_csv: str, output_filename: str) -
     )
 
     # create a copy of the structure of the table
-    assert output_filename.split(".")[-1] == "dbf"
+    assert output_filename.split(".")[-1] == "dbf"  # TODO handle this gracefully
     custom = table_coarse.new(
         filename=output_filename,
     )
